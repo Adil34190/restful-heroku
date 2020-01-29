@@ -20,6 +20,5 @@ gunicorn
 # MySQL
 # ----------------------
 mysql
-mysql.connector
 
 
