@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block css %}
+<style type="text/css">
+  body{
+    padding-top: 40px;
+  }
+  h1, p{
+    text-align:center;
+  }
+  h1{
+    font-size:64px;
+    margin:75px 0 50px;
+  }
+  p{
+    font-size:24px;
+    margin:15px 0;
+  }
+  #link{
+      text-align: center
+      
+  }
+</style>
+{% endblock %}
+
+
+{% block main %}
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>Rest Api</h1>
+
+<p>Récupération de la base de donnée {{bdd_name}}</p>
+<div id="link">
+    <a href="{{ url_for('tables') }}">Liste des tables</a>
+    <br>
+    <a href="{{ url_for('about') }}">A Propos</a>
+</div>
+
+
+</body>
+</html>
+{% endblock %}
