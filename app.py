@@ -55,7 +55,7 @@ def tables():
     #return render_template('tables.html', table = les_tables)
     return les_tables
 
-@app.route('/tables/coupons/<int:coupon_id>', methods=['GET'])
+@app.route('/tables/coupons/<int:coupon_id>' , methods=['GET'])
 def get_coupon(coupon_id):
     coupon = [coupon for coupon in coupons if coupon['id'] == coupon_id]
     if len(coupon) == 0:
