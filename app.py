@@ -16,8 +16,8 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configur
 les_tables = dict()
 coupons = list()
 
-name = 'MSPR_TP'
-conn = mysql.connector.connect(host='mysql.montpellier.epsi.fr', database=name, user='adil.elhajjaji', password='518TPB', port = '5206' )
+name = 'ccADrGfsvy'
+conn = mysql.connector.connect(host='remotemysql.com', database=name, user='ccADrGfsvy', password='ch4OyRxwxU', port = '3306' )
 
 if conn.is_connected():
 
