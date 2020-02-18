@@ -13,7 +13,7 @@ from mysql.connector import Error
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
-les_tables = dict()
+les_coupons = dict()
 coupons = list()
 
 name = 'ccADrGfsvy'
@@ -28,8 +28,8 @@ if conn.is_connected():
     for row in cursor:
         coupons.append(row)
 
-    les_tables["coupons"] = coupons
-    print(les_tables)
+    les_coupons["coupons"] = coupons
+    print(les_coupons)
 
     #les_tables = jsonify({'tables' : les_tables})
     conn.close()
@@ -49,13 +49,12 @@ def about():
     """Render the website's about page."""
     return render_template('about.html')
 
-@app.route('/tables/')
-def tables():
+@app.route('/coupons/')
+def f_coupons():
     """Render the website's table page."""
-    #return render_template('tables.html', table = les_tables)
-    return les_tables
+    return les_coupons
 
-@app.route('/tables/coupons/<int:coupon_id>', methods=['GET'])
+@app.route('/coupons/<int:coupon_id>', methods=['GET'])
 def get_coupon(coupon_id):
     coupon = [coupon for coupon in coupons if coupon['id'] == coupon_id]
     if len(coupon) == 0:
