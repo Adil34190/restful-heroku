@@ -7,7 +7,7 @@ This file creates your application.
 """
 
 import os
-from flask import Flask, render_template, request, redirect, url_for, jsonify, abort, make_response
+from flask import Flask, render_template, jsonify, abort
 import mysql.connector
 from mysql.connector import Error
 
@@ -49,13 +49,13 @@ def about():
     """Render the website's about page."""
     return render_template('about.html')
 
-@app.route('/tables/')
+@app.route('/coupons/')
 def tables():
     """Render the website's table page."""
     #return render_template('tables.html', table = les_tables)
     return les_tables
 
-@app.route('/tables/coupons/<int:coupon_id>' , methods=['GET'])
+@app.route('/coupons/<int:coupon_id>' , methods=['GET'])
 def get_coupon(coupon_id):
     coupon = [coupon for coupon in coupons if coupon['id'] == coupon_id]
     if len(coupon) == 0:
