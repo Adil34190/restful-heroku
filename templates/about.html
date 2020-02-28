@@ -213,7 +213,7 @@ font-style: italic;
     <a class="up" href="#__Methods">Up</a>
     <pre class="get"><code class="huge"><span class="http-method">get</span> /coupons/coupon_id</code></pre></div>
     <div class="method-summary">searches coupon (<span class="nickname">searchCoupon</span>)</div>
-    <div class="method-notes">By passing the coupon in obtained by scanning a qr code, you can get the promotion code, its description and its status</div>
+    <div class="method-notes">By passing the coupon obtained by scanning a QRcode, you can get the corresponding promotion code, its description and its status</div>
 
 
 
@@ -223,13 +223,13 @@ font-style: italic;
     <div class="field-items">
       <div class="param">coupon_id (optional)</div>
 
-      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; coupon id obtained tanks to qr code format: int32</div>
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; coupon id obtained thanks to the QRcode. format: int32</div>
     </div>  <!-- field-items -->
 
 
     <h3 class="field-label">Return type</h3>
     <div class="return-type">
-      array[<a href="#InventoryItem">InventoryItem</a>]
+      array[<a href="#CouponItem">CouponItem</a>]
       
     </div>
 
@@ -253,10 +253,10 @@ font-style: italic;
 
     <h3 class="field-label">Responses</h3>
     <h4 class="field-label">200</h4>
-    search results matching criteria
+    Search results matching criteria
         
     <h4 class="field-label">404</h4>
-    coupon not found
+    Coupon not found
         <a href="#"></a>
     <h4 class="field-label">503</h4>
     Connection error
