@@ -187,9 +187,6 @@ font-style: italic;
     </style>
   </head>
   <body>
-  <h1>A propos</h1>
-    <p>Restful api pour le mspr Android</p>
-    <p>Auteurs: EL HAJJAJI Adil, ALASTUEY Arthur, HABANS Paul, DELAITRE Romain</p>
   <h1>RESTFUL API</h1>
     <div class="app-desc">API pour le mspr android</div>
     <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
@@ -207,14 +204,14 @@ font-style: italic;
   <div class="method-summary"></div>
   <h4><a href="#Developers">Developers</a></h4>
   <ul>
-  <li><a href="#searchCoupon"><code><span class="http-method">get</span> /coupons/<int:coupon_id></code></a></li>
+  <li><a href="#searchCoupon"><code><span class="http-method">get</span> /coupons/coupon_id</code></a></li>
   </ul>
 
   <h1><a name="Developers">Developers</a></h1>
   <div class="method"><a name="searchCoupon"/>
     <div class="method-path">
     <a class="up" href="#__Methods">Up</a>
-    <pre class="get"><code class="huge"><span class="http-method">get</span> /coupons/<int:coupon_id></code></pre></div>
+    <pre class="get"><code class="huge"><span class="http-method">get</span> /coupons/coupon_id</code></pre></div>
     <div class="method-summary">searches coupon (<span class="nickname">searchCoupon</span>)</div>
     <div class="method-notes">By passing the coupon in obtained by scanning a qr code, you can get the promotion code, its description and its status</div>
 
@@ -241,11 +238,6 @@ font-style: italic;
     <h3 class="field-label">Example data</h3>
     <div class="example-data-content-type">Content-Type: application/json</div>
     <pre class="example"><code>[ {
-  "available" : false,
-  "description" : "-20% sur une selection de skate",
-  "id" : 123456,
-  "nom" : "SKATE2020"
-}, {
   "available" : false,
   "description" : "-20% sur une selection de skate",
   "id" : 123456,
