@@ -10,38 +10,24 @@ import os
 from flask import Flask, render_template, jsonify, abort
 import mysql.connector
 from mysql.connector import Error
+import pdb
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'this_should_be_configured')
 les_tables = dict()
 coupons = list()
 
-name = 'MSPR_TP'
-conn = mysql.connector.connect(host='mysql.montpellier.epsi.fr', database=name, user='adil.elhajjaji', password='518TPB', port = '5206' )
-
-if conn.is_connected():
-
-    print("connécté")
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Coupons")
-
-    for row in cursor:
-        coupons.append(row)
-
-    les_tables["coupons"] = coupons
-    print(les_tables)
-
-    #les_tables = jsonify({'tables' : les_tables})
-    conn.close()
+conn = 0
 
 ###
 # Routing for your application.
 ###
 
+
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('home.html', bdd_name = name)
+    return render_template('home.html')
 
 
 @app.route('/about/')
@@ -51,13 +37,14 @@ def about():
 
 @app.route('/coupons/')
 def tables():
-    """Render the website's table page."""
-    #return render_template('tables.html', table = les_tables)
-    return les_tables
+    """Render the website's table page."""    
+    p_tables, p_coupons = connectDb()
+    return p_tables
 
 @app.route('/coupons/<int:coupon_id>' , methods=['GET'])
 def get_coupon(coupon_id):
-    coupon = [coupon for coupon in coupons if coupon['id'] == coupon_id]
+    p_tables, p_coupons = connectDb()
+    coupon = [coupon for coupon in p_coupons if coupon['id'] == coupon_id]
     if len(coupon) == 0:
         abort(404)
     return jsonify({'coupon': coupon[0]})
@@ -79,6 +66,26 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
+def connectDb():    
+    
+    name = 'MSPR_TP'
+    conn = mysql.connector.connect(host='mysql.montpellier.epsi.fr', database=name, user='adil.elhajjaji', password='518TPB', port = '5206' )
+
+    if conn.is_connected():
+        l_les_tables = dict()
+        l_coupons = list()
+        print("connécté")
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM Coupons")
+
+        for row in cursor:
+            l_coupons.append(row)
+
+        l_les_tables["coupons"] = l_coupons
+        #print(les_tables)
+        return [l_les_tables, l_coupons]
+        #les_tables = jsonify({'tables' : les_tables})
+        conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)
