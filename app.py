@@ -29,6 +29,11 @@ def home():
     """Render website's home page."""
     return render_template('home.html')
 
+@app.route('/users')
+def users():
+    """Render website's home page."""
+    p_tables, p_users = getUsers()
+    return p_tables
 
 @app.route('/about/')
 def about():
@@ -38,16 +43,22 @@ def about():
 @app.route('/coupons/')
 def tables():
     """Render the website's table page."""    
-    p_tables, p_coupons = connectDb()
+    p_tables, p_coupons = getCoupons()
     return p_tables
 
 @app.route('/coupons/<int:coupon_id>' , methods=['GET'])
 def get_coupon(coupon_id):
-    p_tables, p_coupons = connectDb()
+    p_tables, p_coupons = getCoupons()
     coupon = [coupon for coupon in p_coupons if coupon['id'] == coupon_id]
     if len(coupon) == 0:
         abort(404)
     return jsonify({'coupon': coupon[0]})
+
+@app.route('/users/<string:email>+<string:pseudo>+<string:password>' , methods=['POST'])
+def post_user(email,pseudo,password):
+    PostUsers(email,pseudo,password)
+    p_tables, p_users = getUsers()
+    return p_tables
 
 
 @app.after_request
@@ -66,7 +77,7 @@ def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
 
-def connectDb():    
+def getCoupons():    
     
     name = 'MSPR_TP'
     conn = mysql.connector.connect(host='mysql.montpellier.epsi.fr', database=name, user='adil.elhajjaji', password='518TPB', port = '5206' )
@@ -85,6 +96,44 @@ def connectDb():
         #print(les_tables)
         return [l_les_tables, l_coupons]
         #les_tables = jsonify({'tables' : les_tables})
+        conn.close()
+
+def getUsers():    
+    
+    name = 'MSPR_TP'
+    conn = mysql.connector.connect(host='mysql.montpellier.epsi.fr', database=name, user='adil.elhajjaji', password='518TPB', port = '5206' )
+
+    if conn.is_connected():
+        l_les_tables = dict()
+        l_users = list()
+        print("connécté")
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM Utilisateurs")
+
+        for row in cursor:
+            l_users.append(row)
+
+        l_les_tables["utilisateurs"] = l_users
+        #print(les_tables)
+        return [l_les_tables, l_users]
+        #les_tables = jsonify({'tables' : les_tables})
+        conn.close()
+
+def PostUsers(email, pseudo, password):    
+    
+    name = 'MSPR_TP'
+    conn = mysql.connector.connect(host='mysql.montpellier.epsi.fr', database=name, user='adil.elhajjaji', password='518TPB', port = '5206' )
+
+    if conn.is_connected():
+        l_les_tables = dict()
+        l_coupons = list()
+        print("connécté")
+        cursor = conn.cursor(dictionary=True)
+        query = "INSERT INTO `Utilisateurs` (pseudo, email, password) VALUES ('" + pseudo + "','" + email + "', PASSWORD('" + password + "'))"
+        cursor.execute(query)
+        conn.commit()
+        print(cursor.rowcount, "Record inserted successfully into Utilisateurs table")
+        cursor.close()
         conn.close()
 
 if __name__ == '__main__':
