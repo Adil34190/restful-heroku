@@ -54,6 +54,14 @@ def get_coupon(coupon_id):
         abort(404)
     return jsonify({'coupon': coupon[0]})
 
+@app.route('/users/<string:pseudo>+<string:password>' , methods=['GET'])
+def get_user(pseudo,password):
+    p_tables, p_coupons = getUsers()
+    coupon = [coupon for coupon in p_coupons if coupon['pseudo'] == pseudo and coupon['password'] == password]
+    if len(coupon) == 0:
+        abort(404)
+    return jsonify({'utilisateur': coupon[0]})
+
 @app.route('/users/<string:email>+<string:pseudo>+<string:password>' , methods=['POST'])
 def post_user(email,pseudo,password):
     PostUsers(email,pseudo,password)
