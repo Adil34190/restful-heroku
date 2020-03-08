@@ -64,7 +64,9 @@ def get_user(pseudo,password):
 
 @app.route('/users/<string:email>+<string:pseudo>+<string:password>' , methods=['POST'])
 def post_user(email,pseudo,password):
-    PostUsers(email,pseudo,password)
+    result = PostUsers(email,pseudo,password)
+    if result == 0:
+        abort(403)
     p_tables, p_users = getUsers()
     return p_tables
 
@@ -84,6 +86,11 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
+@app.errorhandler(403)
+def page_not_found(error):
+    """Mail already exists"""
+    return "this mail already exists", 403
 
 def getCoupons():    
     
@@ -122,9 +129,7 @@ def getUsers():
             l_users.append(row)
 
         l_les_tables["utilisateurs"] = l_users
-        #print(les_tables)
         return [l_les_tables, l_users]
-        #les_tables = jsonify({'tables' : les_tables})
         conn.close()
 
 def PostUsers(email, pseudo, password):    
@@ -137,11 +142,20 @@ def PostUsers(email, pseudo, password):
         l_coupons = list()
         print("connécté")
         cursor = conn.cursor(dictionary=True)
-        query = "INSERT INTO `Utilisateurs` (pseudo, email, password) VALUES ('" + pseudo + "','" + email + "', PASSWORD('" + password + "'))"
+        query = "SELECT email from `Utilisateurs` WHERE email = '" + email +"'"
         cursor.execute(query)
-        conn.commit()
-        print(cursor.rowcount, "Record inserted successfully into Utilisateurs table")
-        cursor.close()
+        rows = cursor.fetchall()
+
+        if not rows:
+            query = "INSERT INTO `Utilisateurs` (pseudo, email, password) VALUES ('" + pseudo + "','" + email + "','" + password + "')"
+            cursor.execute(query)
+            conn.commit()
+            print(cursor.rowcount, "Record inserted successfully into Utilisateurs table")
+            cursor.close()
+            return 1
+        else:
+            print("this email already exists")
+            return 0
         conn.close()
 
 if __name__ == '__main__':
